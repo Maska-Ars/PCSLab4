@@ -75,14 +75,12 @@ static void test(int n, int numBlocks, int blockSize, int op,
     cudaDeviceSynchronize();
     cudaMemcpy(h_result, d_result, n * sizeof(float), cudaMemcpyDeviceToHost);
 
-    cout << op << " " << h_result[0] << endl;
-
     cudaFree(d_a);
     cudaFree(d_b);
     cudaFree(d_result);
 }
 
-int main1(int argc, char* argv[]) 
+int main(int argc, char* argv[]) 
 {
     int rounds = atoi(argv[1]);
 
@@ -114,12 +112,13 @@ int main1(int argc, char* argv[])
         test(n, numBlocks, blockSize, 1, h_a, h_b, h_result);
         test(n, numBlocks, blockSize, 2, h_a, h_b, h_result);
         test(n, numBlocks, blockSize, 3, h_a, h_b, h_result);
+        cout << h_a[0] << " " << h_a[0] << " " << h_result[0] << endl;
 
         auto end = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double> elapsed = end - start;
         time += elapsed.count();
-        cout << "\n" << endl;
+        cout << elapsed.count() << endl;
 
     }
     time /= rounds;

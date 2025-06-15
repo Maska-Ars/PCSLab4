@@ -40,35 +40,42 @@ void bitonic_sort(int n, float* m, int numBlocks, int blockSize)
 {
     float* d_m;
 
+    cout << m[0] << " " << m[1] << endl;
+
     cudaMalloc(&d_m, n * sizeof(float));
-    cudaMemcpy(d_m, m, n, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_m, m, n * sizeof(float), cudaMemcpyHostToDevice);
 
     for (int k = 2; k <= n; k <<= 1) 
     {
         for (int j = k >> 1; j > 0; j = j >> 1) 
         {
             bitonic_sort_step<<<numBlocks, blockSize>>>(d_m, j, k);
+            cudaDeviceSynchronize();
         }
     }
 
-    cudaMemcpy(m, d_m, n, cudaMemcpyDeviceToHost);
+    cudaMemcpy(m, d_m, n * sizeof(float), cudaMemcpyDeviceToHost);
+
+    cout << m[0] << " " << m[1] << " " << m[3] << " " << m[4] << endl;
+
     cudaFree(d_m);
 }
 
 int main(int argc, char* argv[])
 {
     int rounds = atoi(argv[1]);
-    int n = atoi(argv[2]);
 
-    int numBlocks = atoi(argv[3]);
-    int blockSize = atoi(argv[4]);
+    int numBlocks = atoi(argv[2]);
+    int blockSize = atoi(argv[3]);
+
+    int n = numBlocks * blockSize;
 
     double time = 0;
 
     float* m = new float[n];
 
     mt19937 gen(42);
-    uniform_real_distribution<float> dist(0, 2^16);
+    uniform_real_distribution<float> dist(1, 1000000);
 
     for (int round = 0; round < rounds; round++)
     {

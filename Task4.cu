@@ -81,7 +81,7 @@ static void test(int m, int n, int numBlocks, int blockSize, int op,
             kernelDiv2d << <numBlocks, blockSize >> > (d_a, d_b, d_result, m * n);
             break;
         defult:
-            printf("ГЋГёГЁГЎГЄГ  Гў ГўГ»ГЎГ®Г°ГҐ Г®ГЇГҐГ°Г¶ГЁГЁ!!!");
+            printf("Ошибка в выборе оперции!!!");
             return;
     }
 
@@ -96,9 +96,6 @@ static void test(int m, int n, int numBlocks, int blockSize, int op,
         }
     }
 
-
-    cout << op << " " << h_result[0][100] << endl;
-
     cudaFree(d_a);
     cudaFree(d_b);
     cudaFree(d_result);
@@ -108,11 +105,11 @@ int main(int argc, char* argv[])
 {
     int rounds = atoi(argv[1]);
 
-    const int m = atoi(argv[1]);
-    const int n = atoi(argv[2]);
+    const int m = atoi(argv[2]);
+    const int n = atoi(argv[3]);
 
-    int numBlocks = atoi(argv[3]);
-    int blockSize = atoi(argv[4]);
+    int numBlocks = atoi(argv[4]);
+    int blockSize = atoi(argv[5]);
 
     double time = 0;
 
@@ -148,12 +145,13 @@ int main(int argc, char* argv[])
         test(m, n, numBlocks, blockSize, 1, h_a, h_b, h_result);
         test(m, n, numBlocks, blockSize, 2, h_a, h_b, h_result);
         test(m, n, numBlocks, blockSize, 3, h_a, h_b, h_result);
+        cout << h_a[0][0] << " " << h_b[0][0] << " " << h_result[0][0] << endl;
 
         auto end = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double> elapsed = end - start;
         time += elapsed.count();
-        cout << endl;
+        cout << elapsed.count() << endl;
 
     }
     time /= rounds;

@@ -48,8 +48,6 @@ static void test(int n, int numBlocks, int blockSize, float* h_a, float& h_sum)
 
     cudaMemcpy(&h_sum, d_sum, sizeof(float), cudaMemcpyDeviceToHost);
 
-    cout << "Sum = " << h_sum << endl;
-
     cudaFree(d_a);
     cudaFree(d_sum);
 }
@@ -85,7 +83,7 @@ int main(int argc, char* argv[])
 
         std::chrono::duration<double> elapsed = end - start;
         time += elapsed.count();
-        cout << endl;
+        cout << elapsed.count() << endl;
     }
 
     time /= rounds;
