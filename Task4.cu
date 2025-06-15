@@ -81,7 +81,7 @@ static void test(int m, int n, int numBlocks, int blockSize, int op,
             kernelDiv2d << <numBlocks, blockSize >> > (d_a, d_b, d_result, m * n);
             break;
         defult:
-            printf("Ошибка в выборе оперции!!!");
+            printf("ГЋГёГЁГЎГЄГ  Гў ГўГ»ГЎГ®Г°ГҐ Г®ГЇГҐГ°Г¶ГЁГЁ!!!");
             return;
     }
 
@@ -104,7 +104,7 @@ static void test(int m, int n, int numBlocks, int blockSize, int op,
     cudaFree(d_result);
 }
 
-int mainasd(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
     int rounds = atoi(argv[1]);
 
